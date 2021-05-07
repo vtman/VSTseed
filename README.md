@@ -2,7 +2,15 @@
 
 Software tools to find optimal spaced seeds.
 
-<h2>fa2bin</h2>
+<nav>
+  <ul>
+    <li><a href="#link_fa2bin">Convert a reference sequence into a binary file</a></li>
+    <li><a href="#link_ref2chunk">Create a list of pairs (position, signature)</a></li>
+    <li><a href="#link_chunk2sort">Sort the list of pairs (position, signature)</a></li>
+  </ul>
+  </nav>
+
+<h2 id="link_fa2bin">fa2bin</h2>
 
 Suppose a reference genome is a sequence of 5 letters (<b>A</b>, <b>C</b>, <b>G</b>, <b>T</b> and <b>N</b>, where <b>N</b> is any of four symbols). We split the sequence into groups of 32 symbols. We write this 32-symbol sequence as a 128-bit number. An <i>i</i>-th bit from the first 32 bits is 1 if the <i>i</i>-th symbol in the sequence is <b>A</b>, otherwise it is 0. The next 32 bits are for symbol <b>C</b>, then for symbol <b>G</b> and <b>T</b> respectively. If there is a symbol <b>N</b>, then all bits in <b>A</b>, <b>C</b>, <b>G</b> and <b>T</b> arrays are 0.
 
@@ -147,4 +155,7 @@ Reference genome files may contain long contiguous subsequences of symbol <b>N</
   <li>Path to the output index file</li>
 </ol>
 
+<h2 id="link_ref2chunk">ref2chunk</h2>
+
+<h2 id="link_chunk2sort">chunk2sort</h2>
 
