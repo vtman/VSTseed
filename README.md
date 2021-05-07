@@ -155,7 +155,30 @@ Reference genome files may contain long contiguous subsequences of symbol <b>N</
   <li>Path to the output index file</li>
 </ol>
 
+<tt>C:\Temp2\Genome\Ref37\GRCh38.p13.genome.fa C:\Temp2\Genome\Ref37\human.bin C:\Temp2\Genome\Ref37\human.txt</tt>
+
 <h2 id="link_ref2chunk">ref2chunk</h2>
+
+<h3>Parameters</h3>
+
+<ol>
+  <li>A reference genome (binary file)</li>
+  <li>Path to the output folder</li>
+</ol>
+
+<tt>C:\Temp2\Genome\Ref37\human.bin D:\Temp2\Genome\ref64</tt>
 
 <h2 id="link_chunk2sort">chunk2sort</h2>
 
+<h3>Parameters</h3>
+
+<ol>
+  <li>Path to the input folder (unsorted pairs "position, signature")</li>
+  <li>Path to the output folder</li>
+  <li>Path to the output log file (list of occurencies)</li>
+  <li>Weight of the spaced seed</li>
+  <li>Maximum number of occurencies</li> 
+  <li>Number of threads</li>
+</ol>
+
+<tt>D:\Temp2\Genome\ref48 D:\Temp2\Genome\ref48sorted D:\Temp2\Genome\48.log 48 1000000 6</tt>
