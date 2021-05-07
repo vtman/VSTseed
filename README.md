@@ -4,9 +4,9 @@ Software tools to find optimal spaced seeds.
 
 <nav>
   <ul>
-    <li><a href="#link_fa2bin">Convert a reference sequence into a binary file</a></li>
-    <li><a href="#link_ref2chunk">Create a list of pairs (position, signature)</a></li>
-    <li><a href="#link_chunk2sort">Sort the list of pairs (position, signature)</a></li>
+    <li><a href="#link_fa2bin">fa2bin: Convert a reference sequence into a binary file</a></li>
+    <li><a href="#link_ref2chunk">ref2chunk: Create a list of pairs (position, signature)</a></li>
+    <li><a href="#link_chunk2sort">chunk2sort: Sort the list of pairs (position, signature)</a></li>
   </ul>
   </nav>
 
@@ -157,7 +157,69 @@ Reference genome files may contain long contiguous subsequences of symbol <b>N</
 
 <tt>C:\Temp2\Genome\Ref37\GRCh38.p13.genome.fa C:\Temp2\Genome\Ref37\human.bin C:\Temp2\Genome\Ref37\human.txt</tt>
 
+
+
+
+
+
 <h2 id="link_ref2chunk">ref2chunk</h2>
+
+For given spaced seed of weight K and reference sequence we create a list of pairs <i>position</i>, <i>number</i>. For a given position we get K symbols (possibly separated by other symbols, the pattern is defined by a given spaced seed). If any of these K symbols is <b>N</b>, then we do not generate a pair. All positions are coded as 32-bit <tt>unsigned int</tt> numbers (this is enough for a human reference genome). For a given spaced K-symbol sequence we form a contiguous sequence (see X). This sequence contains only <b>A</b>, <b>C</b>, <b>G</b> and <b>T</b> symbols. Therefore it can be coded by 2K bits. So, to code a pair <i>position</i>, <i>number</i> we need 32 + 2K bits. We consider K as a multiple of 8 (i.e. 32, 40, 48, 56, 64). To store the pair we need (4 + K/4) bytes. We may need around 30 GB (for K = 32) to 60 GB (for K=64) of storage. Therefore we split the output list into 256 files. Each pair has (4 + K/4) bytes, which can be written as (3 + K/4) first bytes and the last byte. Depending on the value of the last byte, the first (3 + K/4) bytes are written to the corresponding output file. So, the last byte of the pair can be easily recovered from the index of the output file.
+
+All output files are written as <tt>ref_###.bin</tt> where <tt>###</tt> is a number from 0 to 255.
+
+For a found contiguous sequence of K symbols we form the corresponding 2K bit number in the following way: first K bits are for bitwise values of <tt>A|C</tt> (bitwise OR) and the last K bits are for the values of <tt>C|G</tt>. It is easy to find the corresponding symbol using the following table
+
+<table>
+  <tr>
+    <th>A</th>
+    <th>C</th>
+    <th>G</th>
+    <th>T</th>
+    <th>A|C</th>
+    <th>C|G</th>
+  </tr>
+  <tr>
+    <th>1</th>
+    <th>0</th>
+    <th>0</th>
+    <th>0</th>
+    <th>1</th>
+    <th>0</th>
+  </tr>
+  <tr>
+    <th>0</th>
+    <th>1</th>
+    <th>0</th>
+    <th>0</th>
+    <th>1</th>
+    <th>1</th>
+  </tr>
+  <tr>
+    <th>0</th>
+    <th>0</th>
+    <th>1</th>
+    <th>0</th>
+    <th>0</th>
+    <th>1</th>
+  </tr>
+  <tr>
+    <th>0</th>
+    <th>0</th>
+    <th>0</th>
+    <th>1</th>
+    <th>0</th>
+    <th>0</th>
+  </tr>
+  </table>
+  
+A user need to substitute their own SIMD code to convert spaced seeds into contiguous sequences (function <tt>int spaced2contig(__m128i* m, __m128i* res)</tt>) and modify corresponding <tt>#define</tt> parameters.
+
+<ul>
+<li> <tt>ni32</tt> is the number of 32-symbol chunks for a spaced seed, i.e. a spaced seed has a length of 68 symbols, then it requires three 32-symbol chunks, so <tt>ni32</tt> is <tt>3</tt>.</li>
+  <li> <tt>no8</tt> is the weight of the seed devided by 8.</li>
+  <li> <tt>no32</tt> number of 32-symbol chunks for the contiguos seed (if the seed weight is 48, then <tt>no8 = 6</tt> and <tt>no32 = 2</tt>).</li>
+</ul>
 
 <h3>Parameters</h3>
 
