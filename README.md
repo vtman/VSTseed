@@ -234,6 +234,8 @@ A user need to substitute their own SIMD code to convert spaced seeds into conti
 
 <h3>Parameters</h3>
 
+We sort the list of pairs <i>position</i>, <i>number</i> obtained with the help of <a href="#link_ref2chunk">ref2chunk</a>. For each <i>number</i> we count the number of its occurences. In the log file we provide the following information: number of occurences and how many <i>number</i>s have given occcurences.
+
 <ol>
   <li>Path to the input folder (unsorted pairs "position, signature")</li>
   <li>Path to the output folder</li>
