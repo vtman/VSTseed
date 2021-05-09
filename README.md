@@ -175,7 +175,45 @@ For reads of given given lengths and known number of mismatches spaced seeds of 
 
 <b>Example 3</b>
 
-Let there 
+Let there be a read <tt>ACCGATACTTA</tt> (11 symbols) and two single-symbol mismatches are possible. For example, <tt>ACCGATACTTA</tt> and <tt>ACTGATACGTA</tt> have two mismatches. However, we do not know positions of those mismatches. They may be located at the start of the read, e.g. like <tt>__CGATACTTA</tt> or be in the centre like <tt>ACC_A_ACTTA</tt>. The worst case for a contiguos seed is when distances between gaps (and first/last symbols) are almost equal, e.g. <tt>ACC_ATA_TTA</tt>. This means that we only use a contiguous seed of length (=weight) of 3.
+
+On the other hand it is possible to show that a seed <tt>11101</tt> (length 5, weight 4) can be used. We generate 2 gaps within a given read. For instance, <tt>AC_GAT_CTTA</tt>. Now we put the seed at the first position of the read, then shift it several times until the last element of the seed is in front of the last element of the read. For at least one shift all zeros of the seed are in front of the gaps.
+<table>
+  <tr>
+    <th><tt>ACCGATACTTA</tt></th>
+    <th></th>
+  </tr>
+  <tr>
+    <th><tt>11101______</tt></th>
+    <th>no</th>
+  </tr>
+  <tr>
+    <th><tt>_11101_____</tt></th>
+    <th>no</th>
+  </tr>
+  <tr>
+    <th><tt>__11101____</tt></th>
+    <th>no</th>
+  </tr>
+  <tr>
+    <th><tt>___11101___</tt></th>
+    <th>yes</th>
+  </tr>
+  <tr>
+    <th><tt>____11101__</tt></th>
+    <th>no</th>
+  </tr>
+  <tr>
+    <th><tt>_____11101_</tt></th>
+    <th>no</th>
+  </tr>
+  <tr>
+    <th><tt>______11101</tt></th>
+    <th>no</th>
+  </tr>
+  </table>
+
+The spaced seed has greater weight (4) compared to the contiguous seed (3).
 
 <hr>
 
