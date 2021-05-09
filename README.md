@@ -5,6 +5,8 @@ Software tools to find optimal spaced seeds.
 <nav>
   <ul>
     <li><a href="#link_fa2bin">fa2bin: Convert a reference sequence into a binary file</a></li>
+    <li><a href="#link_periodicSeed">findPeriodicSeedLen: Find periodic spaced seeds for reads of given lengths</a></li>
+    <li><a href="#link_bestSeed">bestSeed: Find spaced seeds of given weights and known number of mismatches</a></li>
     <li><a href="#link_spaced2contig">seed2simd: Converting spaced seeds to contiguous arrays</a></li>
     <li><a href="#link_ref2chunk">ref2chunk: Create a list of pairs (position, signature)</a></li>
     <li><a href="#link_chunk2sort">chunk2sort: Sort the list of pairs (position, signature)</a></li>
@@ -157,6 +159,12 @@ Reference genome files may contain long contiguous subsequences of symbol <b>N</
 </ol>
 
 <tt>C:\Temp2\Genome\Ref37\GRCh38.p13.genome.fa C:\Temp2\Genome\Ref37\human.bin C:\Temp2\Genome\Ref37\human.txt</tt>
+
+
+
+<h2 id="link_periodicSeed">findPeriodicSeedLen</h2>
+
+<h2 id="link_bestSeed">bestSeed</h2>
 
 
 
