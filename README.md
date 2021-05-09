@@ -5,7 +5,7 @@ Software tools to find optimal spaced seeds.
 <nav>
   <ul>
     <li><a href="#link_fa2bin">fa2bin: Convert a reference sequence into a binary file</a></li>
-    <li><a href="#link_spaced2cotig">Converting spaced seeds to contiguous arrays</a></li>
+    <li><a href="#link_spaced2contig">Converting spaced seeds to contiguous arrays</a></li>
     <li><a href="#link_ref2chunk">ref2chunk: Create a list of pairs (position, signature)</a></li>
     <li><a href="#link_chunk2sort">chunk2sort: Sort the list of pairs (position, signature)</a></li>
   </ul>
@@ -166,30 +166,71 @@ Let there be a spaced seed (an array of ones and zeros). For example,
 
 <div><tt>11011001111010100001101100111101010000110110011110101000011</tt></div>
 
-The length of the seed is 59 and its weight (number of 1s) is 32. We want to rearrange indices of the original seed and form a contiguous pattern of length/weight 32. The simplest approach is just remove all zero elements and preserver the order of 1s like below.
+The length of the seed is 59 and its weight (number of 1s) is 32. We want to rearrange indices of the original seed and form a contiguous pattern of length/weight 32. The simplest approach is just remove all zero elements and preserve the order of 1s like below.
 
-<div><img src="images/spaced2contigStandard.png"></div>
+<div><img src="images/spaced2contigStandard.png" width="50%"></div>
 
-However, for the given spaced seed we will need at least 14 shift operations as there are 15 chunks of zeros.
+However, for the given spaced seed we will need at least 14 shift operations as there are 15 contiguous chunks of zeros.
 
-We aim to use 128-bit SIMD instructions applied to $ACGT$-sequences (first 32 bits are for $A$ component, next 32 bits are for $C$, etc.). So, we pad the original seed with zeros, so the new seed length is a multiple of 32 and split it into 32-bit arrays (each array corresponds to a new row):
-\begin{center}
-\begin{tabular}{ll}
-\text{row 1:} & \texttt{11011001111010100001101100111101}\\
-\text{row 2:} & \texttt{01000011011001111010100001100000}
-\end{tabular}
-\end{center}
+We aim to use 128-bit SIMD instructions. Therefore we pad the original seed with zeros, so the new seed length is a multiple of 32 (64 for the given example) and split it into 32-bit arrays (each array corresponds to a new row):
+<table>
+  <tr>
+    <th>row 1:</th>
+    <th><tt>11011001111010100001101100111101</tt></th>
+  </tr>
+  <tr>
+    <th>row 2:</th>
+    <th><tt>01000011011001111010100001100000</tt></th>
+  </tr>
+</table>
 We may try to solve the problem by the following approach. All 1s of the first row do not change their position, we translate the second row with respect to the first one and try to find such shifts, so 1s of the second row are just below 0s of the first row. We need to perform multiple shifts. One possible combination of shifts is shown below
-\begin{center}
-\begin{tabular}{lrl}
- & & \texttt{\phantom{11111111}\textcolor{black}{11011001111010100001101100111101}}\\
-shift & $-8$: & \texttt{\textcolor{Cyan}{01000011011001111010100001100000}}\\
-shift & $-5$: & \texttt{\phantom{010}\textcolor{Plum}{01000011011001111010100001100000}}\\
-shift & $15$:  & \texttt{\phantom{10111111111111111111111}\textcolor{ForestGreen}{01000011011001111010100001100000}}\\
-\end{tabular}
-\end{center}
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th><tt>________11011001111010100001101100111101_______________</tt></th>
+  </tr>
+  <tr>
+    <th>shift</th>
+    <th>-8</th>
+    <th><tt>01000011011001111010100001100000_______________________</tt></th>
+  </tr>
+  <tr>
+    <th>shift</th>
+    <th>-5</th>
+    <th><tt>___01000011011001111010100001100000____________________</tt></th>
+  </tr>
+  <tr>
+    <th>shift</th>
+    <th>15</th>
+    <th><tt>_______________________01000011011001111010100001100000</tt></th>
+  </tr>
+  </table>
+
 After masking has been applied to the second row we have
 
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th><tt>________11011001111010100001101100111101_______________</tt></th>
+  </tr>
+  <tr>
+    <th>shift</th>
+    <th>-8</th>
+    <th><tt>0_0000__0__0011__0_0_00001100000_______________________</tt></th>
+  </tr>
+  <tr>
+    <th>shift</th>
+    <th>-5</th>
+    <th><tt>___0_0000_10__00___101010000__00000____________________</tt></th>
+  </tr>
+  <tr>
+    <th>shift</th>
+    <th>15</th>
+    <th><tt>_______________________0100001_01100__1_0_0_0000__00000</tt></th>
+  </tr>
+  </table>
 
 
 <h2 id="link_ref2chunk">ref2chunk</h2>
