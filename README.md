@@ -164,6 +164,23 @@ Reference genome files may contain long contiguous subsequences of symbol <b>N</
 
 <h2 id="link_periodicSeed">findPeriodicSeedLen</h2>
 
+A seed is an array of binary elements, i.e. each element is either 1 or 0. It is assumed that the first and last elements of the array are 1. The <b>length</b> of the seed is the number of elements in the array, the <b>weight</b> of the seed is the number of 1s. For example, we have a seed
+<tt>111001011100101110010111001011</tt>, its length is 30 and its weight is 18. 
+
+Suppose there are two genomic sequences (one is a very long reference sequence, e.g. billions of elements, the other is a in times shorter one (a read), e.g. tens or hundreds of elements). We aim to find such positions of the reference array where the both arrays have as many same elements as possible. However, in real problems the reference sequence is unknown and we are only given a reference sequence which differs from the unknown one (one letter mismatches, insertions, deletions, etc.). To align a read with respect to a known reference sequence we may find positions of shorter subsequences for the both arrays. For example, a read contains 100 symbols (<b>A</b>, <b>C</b>, <b>G</b>, <b>T</b> and <b>N</b>). We may then take the first 20 symbols of the read and check where this subsequence is present in the reference sequence. For this purcpose we create an index file for the reference sequence. Shorter subsequences allow us to have a relatively small index file, however there may be a lot of candidate positions to be processed. At the same time due to various mutations in some cases a read may not be able to align in suach a way that all symbols are at the same positions. In most cases those differences are single symbol mismatches. Therefore instead of a contiguous subsequnce we may use subsequences with gaps (or a spaced seed).
+
+For reads of given given lengths and known number of mismatches spaced seeds of greater weight are possible compared to contiguous seeds.
+
+<hr>
+
+<b>Example 3</b>
+
+Let there 
+
+<hr>
+
+We call seeds <b>periodic</b> seeds if they can be represented as concatenated same arrays. The above seed is a periodic one with period <tt>1110010</tt>, since it can be written as <tt>1110010_1110010_1110010_1110010_11</tt>. Of course, any seed is a periodic one as we may always use the whole array as a periodic structure (repeated only once).
+
 <h2 id="link_bestSeed">bestSeed</h2>
 
 
