@@ -147,7 +147,7 @@ We want to count the total number of symbols <b>A</b>, <b>C</b>, <b>G</b>, <b>T<
 
 Conversion of a reference genome to the proposed binary format. The reference genome is in FASTA format. The code was tested with the human reference genome <a href="http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_37/GRCh38.p13.genome.fa.gz">http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_37/GRCh38.p13.genome.fa.gz</a>
 
-Reference genome files may contain long contiguous subsequences of symbol <b>N</b> which may not be used for read alignment algorithms. Therefore those subseqiences are removed. On the other hand, sequences for two neighbouring chromosomes may be too close to each other, so we pad each chromosome (or other separated sequences in FASTA files) with extra <b>N</b> symbols. In order to know the original positions we create an index file.
+Reference genome files may contain long contiguous subsequences of symbol <b>N</b> which may not be used for read alignment algorithms. Therefore those subsequences are removed. On the other hand, sequences for two neighbouring chromosomes may be too close to each other, so we pad each chromosome (or other separated sequences in FASTA files) with extra <b>N</b> symbols. In order to know the original positions we create an index file.
 
 
 <h3>Parameters</h3>
@@ -167,7 +167,7 @@ Reference genome files may contain long contiguous subsequences of symbol <b>N</
 A seed is an array of binary elements, i.e. each element is either 1 or 0. It is assumed that the first and last elements of the array are 1. The <b>length</b> of the seed is the number of elements in the array, the <b>weight</b> of the seed is the number of 1s. For example, we have a seed
 <tt>111001011100101110010111001011</tt>, its length is 30 and its weight is 18. 
 
-Suppose there are two genomic sequences (one is a very long reference sequence, e.g. billions of elements, the other is a in times shorter one (a read), e.g. tens or hundreds of elements). We aim to find such positions of the reference array where the both arrays have as many same elements as possible. However, in real problems the reference sequence is unknown and we are only given a reference sequence which differs from the unknown one (one letter mismatches, insertions, deletions, etc.). To align a read with respect to a known reference sequence we may find positions of shorter subsequences for the both arrays. For example, a read contains 100 symbols (<b>A</b>, <b>C</b>, <b>G</b>, <b>T</b> and <b>N</b>). We may then take the first 20 symbols of the read and check where this subsequence is present in the reference sequence. For this purcpose we create an index file for the reference sequence. Shorter subsequences allow us to have a relatively small index file, however there may be a lot of candidate positions to be processed. At the same time due to various mutations in some cases a read may not be able to align in suach a way that all symbols are at the same positions. In most cases those differences are single symbol mismatches. Therefore instead of a contiguous subsequnce we may use subsequences with gaps (or a spaced seed).
+Suppose there are two genomic sequences (one is a very long reference sequence, e.g. billions of elements, the other is a in times shorter one (a read), e.g. tens or hundreds of elements). We aim to find such positions of the reference array where the both arrays have as many same elements as possible. However, in real problems the reference sequence is unknown and we are only given a reference sequence which differs from the unknown one (one letter mismatches, insertions, deletions, etc.). To align a read with respect to a known reference sequence we may find positions of shorter subsequences for the both arrays. For example, a read contains 100 symbols (<b>A</b>, <b>C</b>, <b>G</b>, <b>T</b> and <b>N</b>). We may then take the first 20 symbols of the read and check where this subsequence is present in the reference sequence. For this purcpose we create an index file for the reference sequence. Shorter subsequences allow us to have a relatively small index file, however there may be a lot of candidate positions to be processed. At the same time due to various mutations in some cases a read may not be able to align in suach a way that all symbols are at the same positions. In most cases those differences are single symbol mismatches. Therefore instead of a contiguous subsequence we may use subsequences with gaps (or a spaced seed).
 
 For reads of given given lengths and known number of mismatches spaced seeds of greater weight are possible compared to contiguous seeds.
 
@@ -389,7 +389,7 @@ A user need to substitute their own SIMD code to convert spaced seeds into conti
 
 <ul>
 <li> <tt>ni32</tt> is the number of 32-symbol chunks for a spaced seed, i.e. a spaced seed has a length of 68 symbols, then it requires three 32-symbol chunks, so <tt>ni32</tt> is <tt>3</tt>.</li>
-  <li> <tt>no8</tt> is the weight of the seed devided by 8.</li>
+  <li> <tt>no8</tt> is the weight of the seed divided by 8.</li>
   <li> <tt>no32</tt> number of 32-symbol chunks for the contiguos seed (if the seed weight is 48, then <tt>no8 = 6</tt> and <tt>no32 = 2</tt>).</li>
 </ul>
 
