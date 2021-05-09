@@ -168,7 +168,7 @@ Let there be a spaced seed (an array of ones and zeros). For example,
 
 The length of the seed is 59 and its weight (number of 1s) is 32. We want to rearrange indices of the original seed and form a contiguous pattern of length/weight 32. The simplest approach is just remove all zero elements and preserve the order of 1s like below.
 
-<div><img src="images/spaced2contigStandard.png" width="50%"></div>
+<div><img src="images/spaced2contigStandard.png" width="70%"></div>
 
 However, for the given spaced seed we will need at least 14 shift operations as there are 15 contiguous chunks of zeros.
 
@@ -234,7 +234,7 @@ After masking has been applied to the second row we have
   
 The final mapping is shown below.
 
-<div><img src="images/spaced2contigGood.png" width="50%"></div>
+<div><img src="images/spaced2contigGood.png" width="70%"></div>
 
 
 <h2 id="link_ref2chunk">ref2chunk</h2>
