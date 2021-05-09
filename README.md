@@ -7,7 +7,7 @@ Software tools to find optimal spaced seeds.
     <li><a href="#link_fa2bin">fa2bin: Convert a reference sequence into a binary file</a></li>
     <li><a href="#link_periodicSeed">findPeriodicSeedLen: Find periodic spaced seeds for reads of given lengths</a></li>
     <li><a href="#link_bestSeed">bestSeed: Find spaced seeds of given weights and known number of mismatches</a></li>
-    <li><a href="#link_spaced2contig">seed2simd: Converting spaced seeds to contiguous arrays</a></li>
+    <li><a href="#link_spaced2contig">seed2simd: Convert spaced seeds to contiguous arrays</a></li>
     <li><a href="#link_ref2chunk">ref2chunk: Create a list of pairs (position, signature)</a></li>
     <li><a href="#link_chunk2sort">chunk2sort: Sort the list of pairs (position, signature)</a></li>
   </ul>
@@ -216,13 +216,13 @@ In a similar way we may consider all other possible positions of those two gaps 
 
 <hr>
 
-For known length of reads and weight of seeds we aim to find such seeds that will allow us to have as many mismatches as possible. In case of long reads the procedure of checking all possible seeds is computationally extensive. However, for shorter reads (< 40 symbols) best seeds showed specific properties. They were periodic. We call seeds <b>periodic</b> if they can be represented as concatenated same arrays. The above seed is a periodic one with period <tt>1110010</tt>, since it can be written as <tt>1110010|1110010|1110010|1110010|11</tt>. Of course, any seed is a periodic one as we may always use the whole array as a periodic structure (repeated only once).
+For known length of reads and weight of seeds we aim to find such seeds that will allow us to have as many mismatches as possible. In case of long reads the procedure of checking all possible seeds is computationally extensive. However, for shorter reads (< 40 symbols) best seeds showed specific properties. They were periodic. We call seeds <b>periodic</b> if they can be represented as concatenated same arrays. The above seed (<tt>111001011100101110010111001011</tt>) is a periodic one with period <tt>1110010</tt>, since it can be written as <tt>1110010|1110010|1110010|1110010|11</tt>. Of course, any seed is a periodic one as we may always use the whole array as a periodic structure (repeated only once).
 
 <h2 id="link_bestSeed">bestSeed</h2>
 
 
 
-<h2 id="link_spaced2contig">seed2simd: Coverting spaced seeds to contiguous arrays</h2>
+<h2 id="link_spaced2contig">seed2simd: Convert spaced seeds to contiguous arrays</h2>
 
 Let there be a spaced seed (an array of ones and zeros). For example,
 
