@@ -212,12 +212,11 @@ On the other hand it is possible to show that a seed <tt>11101</tt> (length 5, w
     <th>no</th>
   </tr>
   </table>
-
-The spaced seed has greater weight (4) compared to the contiguous seed (3).
+In a similar way we may consider all other possible positions of those two gaps and prove that the spaced seed can be used. The spaced seed has greater weight (4) compared to the contiguous seed (3).
 
 <hr>
 
-We call seeds <b>periodic</b> seeds if they can be represented as concatenated same arrays. The above seed is a periodic one with period <tt>1110010</tt>, since it can be written as <tt>1110010_1110010_1110010_1110010_11</tt>. Of course, any seed is a periodic one as we may always use the whole array as a periodic structure (repeated only once).
+For known length of reads and weight of seeds we aim to find such seeds that will allow us to have as many mismatches as possible. In case of long reads the procedure of checking all possible seeds is computationally extensive. However, for shorter reads (< 40 symbols) best seeds showed specific properties. They were periodic. We call seeds <b>periodic</b> if they can be represented as concatenated same arrays. The above seed is a periodic one with period <tt>1110010</tt>, since it can be written as <tt>1110010|1110010|1110010|1110010|11</tt>. Of course, any seed is a periodic one as we may always use the whole array as a periodic structure (repeated only once).
 
 <h2 id="link_bestSeed">bestSeed</h2>
 
