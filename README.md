@@ -5,7 +5,7 @@ Software tools to find optimal spaced seeds.
 <nav>
   <ul>
     <li><a href="#link_fa2bin">fa2bin: Convert a reference sequence into a binary file</a></li>
-    <li><a href="#link_spaced2contig">Converting spaced seeds to contiguous arrays</a></li>
+    <li><a href="#link_spaced2contig">seed2simd: Converting spaced seeds to contiguous arrays</a></li>
     <li><a href="#link_ref2chunk">ref2chunk: Create a list of pairs (position, signature)</a></li>
     <li><a href="#link_chunk2sort">chunk2sort: Sort the list of pairs (position, signature)</a></li>
   </ul>
@@ -160,7 +160,7 @@ Reference genome files may contain long contiguous subsequences of symbol <b>N</
 
 
 
-<h2 id="link_spaced2contig">Coverting spaced seeds to contiguous arrays</h2>
+<h2 id="link_spaced2contig">seed2simd: Coverting spaced seeds to contiguous arrays</h2>
 
 Let there be a spaced seed (an array of ones and zeros). For example,
 
@@ -236,10 +236,45 @@ The final mapping is shown below.
 
 <div><img src="images/spaced2contigGood.png" width="70%"></div>
 
+The corresponding conversion of the spaced seed (two 128-bit elements <tt>m</tt>) into a contiguous array (one 128-bit element <tt>res</tt>) can be written with SIMD instructions.
+<pre>
+__m128i c, t, s;
+c = _mm_set1_epi32(0xbcd8579b);
+res[0] = _mm_and_si128(m[0], c);
+c = _mm_set1_epi32(0x06006000);
+t = _mm_and_si128(m[1], c);
+s = _mm_srli_epi32(t, 8);
+res[0] = _mm_or_si128(res[0], s);
+c = _mm_set1_epi32(0x00150080);
+t = _mm_and_si128(m[1], c);
+s = _mm_srli_epi32(t, 5);
+res[0] = _mm_or_si128(res[0], s);
+c = _mm_set1_epi32(0x00008642);
+t = _mm_and_si128(m[1], c);
+s = _mm_slli_epi32(t, 15);
+res[0] = _mm_or_si128(res[0], s);
+</pre>
+Please, note that there may be several conversions. 
+
+<h3>Parameters</h3>
+
+<ol>
+  <li>Input spaced seed</li>
+  <li>Path to the output text file</li>
+</ol>
+
+<tt>11011001111010100001101100111101010000110110011110101000011 D:\Genome\simd\testSimd.txt</tt>
+
+
+
+
+
+
+
 
 <h2 id="link_ref2chunk">ref2chunk</h2>
 
-For given spaced seed of weight K and reference sequence we create a list of pairs <i>position</i>, <i>number</i>. For a given position we get K symbols (possibly separated by other symbols, the pattern is defined by a given spaced seed). If any of these K symbols is <b>N</b>, then we do not generate a pair. All positions are coded as 32-bit <tt>unsigned int</tt> numbers (this is enough for a human reference genome). For a given spaced K-symbol sequence we form a contiguous sequence (see X). This sequence contains only <b>A</b>, <b>C</b>, <b>G</b> and <b>T</b> symbols. Therefore it can be coded by 2K bits. So, to code a pair <i>position</i>, <i>number</i> we need 32 + 2K bits. We consider K as a multiple of 8 (i.e. 32, 40, 48, 56, 64). To store the pair we need (4 + K/4) bytes. We may need around 30 GB (for K = 32) to 60 GB (for K=64) of storage. Therefore we split the output list into 256 files. Each pair has (4 + K/4) bytes, which can be written as (3 + K/4) first bytes and the last byte. Depending on the value of the last byte, the first (3 + K/4) bytes are written to the corresponding output file. So, the last byte of the pair can be easily recovered from the index of the output file.
+For given spaced seed of weight K and reference sequence we create a list of pairs <i>position</i>, <i>number</i>. For a given position we get K symbols (possibly separated by other symbols, the pattern is defined by a given spaced seed). If any of these K symbols is <b>N</b>, then we do not generate a pair. All positions are coded as 32-bit <tt>unsigned int</tt> numbers (this is enough for a human reference genome). For a given spaced K-symbol sequence we form a contiguous sequence (see <a href="#link_spaced2contig">seed2simd</a>). This sequence contains only <b>A</b>, <b>C</b>, <b>G</b> and <b>T</b> symbols. Therefore it can be coded by 2K bits. So, to code a pair <i>position</i>, <i>number</i> we need 32 + 2K bits. We consider K as a multiple of 8 (i.e. 32, 40, 48, 56, 64). To store the pair we need (4 + K/4) bytes. We may need around 30 GB (for K = 32) to 60 GB (for K=64) of storage. Therefore we split the output list into 256 files. Each pair has (4 + K/4) bytes, which can be written as (3 + K/4) first bytes and the last byte. Depending on the value of the last byte, the first (3 + K/4) bytes are written to the corresponding output file. So, the last byte of the pair can be easily recovered from the index of the output file.
 
 All output files are written as <tt>ref_###.bin</tt> where <tt>###</tt> is a number from 0 to 255.
 
@@ -309,7 +344,7 @@ A user need to substitute their own SIMD code to convert spaced seeds into conti
 
 <h3>Parameters</h3>
 
-We sort the list of pairs <i>position</i>, <i>number</i> obtained with the help of <a href="#link_ref2chunk">ref2chunk</a>. For each <i>number</i> we count the number of its occurences. In the log file we provide the following information: number of occurences and how many <i>number</i>s have given occcurences.
+We sort the list of pairs <i>position</i>, <i>number</i> obtained with the help of <a href="#link_ref2chunk">ref2chunk</a>. For each <i>number</i> we count the number of its occurences. In the log file we provide the following information: number of occurences and how many <i>number</i>s have given occurences.
 
 <ol>
   <li>Path to the input folder (unsorted pairs "position, signature")</li>
