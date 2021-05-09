@@ -180,7 +180,7 @@ Let there be a read <tt>ACCGATACTTA</tt> (11 symbols) and two single-symbol mism
 On the other hand it is possible to show that a seed <tt>11101</tt> (length 5, weight 4) can be used. We generate 2 gaps within a given read. For instance, <tt>AC_GAT_CTTA</tt>. Now we put the seed at the first position of the read, then shift it several times until the last element of the seed is in front of the last element of the read. For at least one shift all zeros of the seed are in front of the gaps.
 <table>
   <tr>
-    <th><tt>ACCGATACTTA</tt></th>
+    <th><tt>AC_GAT_CTTA</tt></th>
     <th></th>
   </tr>
   <tr>
