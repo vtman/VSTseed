@@ -5,6 +5,7 @@ Software tools to find optimal spaced seeds.
 <nav>
   <ul>
     <li><a href="#link_fa2bin">fa2bin: Convert a reference sequence into a binary file</a></li>
+    <li><a href="#link_spaced2cotig">Converting spaced seeds to contiguous arrays</a></li>
     <li><a href="#link_ref2chunk">ref2chunk: Create a list of pairs (position, signature)</a></li>
     <li><a href="#link_chunk2sort">chunk2sort: Sort the list of pairs (position, signature)</a></li>
   </ul>
@@ -159,6 +160,35 @@ Reference genome files may contain long contiguous subsequences of symbol <b>N</
 
 
 
+<h2 id="link_spaced2contig">Coverting spaced seeds to contiguous arrays</h2>
+
+Let there be a spaced seed (an array of ones and zeros). For example,
+
+<div><tt>11011001111010100001101100111101010000110110011110101000011</tt></div>
+
+The length of the seed is 59 and its weight (number of 1s) is 32. We want to rearrange indices of the original seed and form a contiguous pattern of length/weight 32. The simplest approach is just remove all zero elements and preserver the order of 1s like below.
+
+<div><img src="images/spaced2contigStandard.png"></div>
+
+However, for the given spaced seed we will need at least 14 shift operations as there are 15 chunks of zeros.
+
+We aim to use 128-bit SIMD instructions applied to $ACGT$-sequences (first 32 bits are for $A$ component, next 32 bits are for $C$, etc.). So, we pad the original seed with zeros, so the new seed length is a multiple of 32 and split it into 32-bit arrays (each array corresponds to a new row):
+\begin{center}
+\begin{tabular}{ll}
+\text{row 1:} & \texttt{11011001111010100001101100111101}\\
+\text{row 2:} & \texttt{01000011011001111010100001100000}
+\end{tabular}
+\end{center}
+We may try to solve the problem by the following approach. All 1s of the first row do not change their position, we translate the second row with respect to the first one and try to find such shifts, so 1s of the second row are just below 0s of the first row. We need to perform multiple shifts. One possible combination of shifts is shown below
+\begin{center}
+\begin{tabular}{lrl}
+ & & \texttt{\phantom{11111111}\textcolor{black}{11011001111010100001101100111101}}\\
+shift & $-8$: & \texttt{\textcolor{Cyan}{01000011011001111010100001100000}}\\
+shift & $-5$: & \texttt{\phantom{010}\textcolor{Plum}{01000011011001111010100001100000}}\\
+shift & $15$:  & \texttt{\phantom{10111111111111111111111}\textcolor{ForestGreen}{01000011011001111010100001100000}}\\
+\end{tabular}
+\end{center}
+After masking has been applied to the second row we have
 
 
 
