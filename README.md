@@ -231,6 +231,10 @@ After masking has been applied to the second row we have
     <th><tt>_______________________0100001_01100__1_0_0_0000__00000</tt></th>
   </tr>
   </table>
+  
+The final mapping is shown below.
+
+<div><img src="images/spaced2contigGood.png" width="50%"></div>
 
 
 <h2 id="link_ref2chunk">ref2chunk</h2>
