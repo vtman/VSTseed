@@ -218,7 +218,43 @@ In a similar way we may consider all other possible positions of those two gaps 
 
 For known length of reads and weight of seeds we aim to find such seeds that will allow us to have as many mismatches as possible. In case of long reads the procedure of checking all possible seeds is computationally extensive. However, for shorter reads (< 40 symbols) best seeds showed specific properties. They were periodic. We call seeds <b>periodic</b> if they can be represented as concatenated same arrays. The above seed (<tt>111001011100101110010111001011</tt>) is a periodic one with period <tt>1110010</tt>, since it can be written as <tt>1110010|1110010|1110010|1110010|11</tt>. Of course, any seed is a periodic one as we may always use the whole array as a periodic structure (repeated only once).
 
+The code tries to find all periodic seeds for reads of given length. 
+
+<h3>Parameters</h3>
+
+<ol>
+  <li>Weight of spaced seeds</li>
+  <li>Maximum number of mismatches for reads</li>
+  <li>Period (length of substring)</li>
+  <li>Maximum number of spaced seeds to be found (-1 is to find all)</li>
+  <li>Length of reads</li>
+  <li>Path to the output file (seeds as hex numbers)</li>
+  <li>Path to the output file (seeds as binary numbers)</li>
+  <li>Path to the output file (period as binary numbers)</li>
+</ol>
+
+<tt>64 2 13 -1 104 "hex_64_2_13.txt" "pat_64_2_13.txt" "per_64_2_13.txt"</tt>
+
+The code uses Intel libraries to generate random numbers (for various positions of gaps). The best approach is to install <a href="https://software.intel.com/content/www/us/en/develop/tools/oneapi.html">oneAPI</a> base toolkit to get the libraries and compilers.
+
 <h2 id="link_bestSeed">bestSeed</h2>
+
+The code uses the <a href="link_periodicSeed">above</a> executable files in multithread environment to find best seeds for given periods, number of mismatches and weight of seeds.
+
+<h3>Parameters</h3>
+
+<ol>
+  <li>Path to the executable file</li>
+  <li>Output folder</li>
+  <li>Weight of spaced seeds</li>
+  <li>Number of mismatches</li>
+  <li>Period (minimum value)</li>
+  <li>Period (maximum value)</li>
+  <li>Number of threads</li>
+</ol>
+
+<tt>"D:\Genome\code\checkPeriodicSeed.exe" "D:\Genome\bestSeed" 64 5 11 18 6</tt>
+
 
 
 
