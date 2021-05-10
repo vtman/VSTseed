@@ -421,7 +421,7 @@ For a found contiguous sequence of K symbols we form the corresponding 2K bit nu
   </tr>
   </table>
   
-A user need to substitute their own SIMD code to convert spaced seeds into contiguous sequences (function <tt>int spaced2contig(__m128i* m, __m128i* res)</tt>) and modify corresponding <tt>#define</tt> parameters.
+A user needs to substitute their own SIMD code to convert spaced seeds into contiguous sequences (function <tt>int spaced2contig(__m128i* m, __m128i* res)</tt>) and modify corresponding <tt>#define</tt> parameters.
 
 <ul>
 <li> <tt>ni32</tt> is the number of 32-symbol chunks for a spaced seed, i.e. a spaced seed has a length of 68 symbols, then it requires three 32-symbol chunks, so <tt>ni32</tt> is <tt>3</tt>.</li>
@@ -445,7 +445,7 @@ A user need to substitute their own SIMD code to convert spaced seeds into conti
 We sort the list of pairs <i>position</i>, <i>number</i> obtained with the help of <a href="#link_ref2chunk">ref2chunk</a>. For each <i>number</i> we count the number of its occurences. In the log file we provide the following information: number of occurences and how many <i>number</i>s have given occurences.
 
 <ol>
-  <li>Path to the input folder (unsorted pairs "position, signature")</li>
+  <li>Path to the input folder (unsorted pairs <i>position</i>, <i>number</i>)</li>
   <li>Path to the output folder</li>
   <li>Path to the output log file (list of occurencies)</li>
   <li>Weight of the spaced seed</li>
