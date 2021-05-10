@@ -239,7 +239,7 @@ The code uses Intel libraries to generate random numbers (for various positions 
 
 <h2 id="link_bestSeed">bestSeed</h2>
 
-The code uses the <a href="link_periodicSeed">above</a> executable files in multithread environment to find best seeds for given periods, number of mismatches and weight of seeds.
+The code uses the <a href="#link_periodicSeed">above</a> executable files in multithread environment to find best seeds for given periods, number of mismatches and weight of seeds.
 
 <h3>Parameters</h3>
 
